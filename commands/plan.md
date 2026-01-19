@@ -12,12 +12,31 @@ description: |
 ## Usage
 
 ```
-/iternaut:plan
+/iternaut:plan [prd-version]
 ```
+
+Examples:
+```bash
+/iternaut:plan                    # Use LATEST PRD from registry
+/iternaut:plan v1.0.0             # Use specific version
+/iternaut:plan prd-001-task.md    # Use specific file
+```
+
+## PRD Location
+
+PRDs are stored in `.claude/prds/` with version prefix:
+```
+.claude/prds/
+  v1.0.0-prd-001-task-manager.md
+  v1.1.0-prd-002-payment-api.md
+  .prd-registry                    # Version registry
+```
+
+The `.prd-registry` file defines which PRD is LATEST.
 
 ## How It Works
 
-1. **You (Claude)** read PRD.md
+1. **You (Claude)** read PRD from `.claude/prds/`
 2. **You** initialize `.iter/progress.txt`
 3. **You** spawn subagents for each phase
 4. **Subagents** do the work and write to `.iter/progress.txt`
@@ -28,12 +47,12 @@ description: |
 
 | Phase | Subagent | Output |
 |-------|----------|--------|
-| Boot | (you) | Read PRD, init progress.txt |
+| Boot | (you) | Read PRD from prds/, init progress.txt |
 | Research (parallel) | iter-researcher | research-*.md |
 | Architecture | iter-architect | PLAN.md#Architecture |
 | Planning | iter-planner | PLAN.md#Tasks |
 | Review | iter-reviewer | SHIP/REVISE |
-| Finalize | iter-*, iter-tester, iter-documenter | artifacts/ |
+| Finalize | iter-*, iter-tester, iter-documenter, iter-code-simplifier | artifacts/ |
 
 ## Tracking Progress
 
@@ -50,9 +69,9 @@ cat .iter/progress.txt
 ## Example
 
 ```
-/iternaut:plan
+/iternaut:plan v1.0.0
 
-# Claude reads PRD.md
+# Claude reads v1.0.0-prd-001-task-manager.md from .claude/prds/
 # Claude initializes .iter/progress.txt
 # Claude spawns:
 #   - iter-researcher (Technical)
@@ -66,13 +85,13 @@ cat .iter/progress.txt
 # Claude reads progress.txt
 # Claude spawns iter-reviewer
 # Claude checks for SHIP/REVISE
-# Claude spawns finalize subagents
+# Claude spawns finalize subagents (including iter-code-simplifier)
 # Claude writes COMPLETE
 ```
 
 ## Input Files
 
-- `.claude/PRD.md` (required)
+- `.claude/prds/v*.md` (versioned PRD, required)
 - `.claude/CONTEXT.md` (optional)
 - `.claude/NON_GOALS.md` (optional)
 

@@ -33,11 +33,17 @@ Format:
 ## Workflow Phases
 
 ### Phase 1: BOOT
-1. Read `.claude/PRD.md`
+1. Read PRD from `.claude/prds/` directory
 2. Read `.claude/CONTEXT.md` (optional)
 3. Read `.claude/NON_GOALS.md` (optional)
 4. Initialize `.iter/` directory
 5. Write START entry to `.iter/progress.txt`
+
+**PRD Versioning:**
+- PRDs are stored in `.claude/prds/` with version prefix: `v1.0.0-prd-001-name.md`
+- Latest PRD is defined in `.claude/prds/.prd-registry` (LATEST=...)
+- To use a specific version: specify filename or use `LATEST` for current
+- Multiple PRDs can coexist for different features/versions
 
 ### Phase 2: RESEARCH (Parallel)
 Spawn 3 iter-researcher subagents in parallel:
@@ -105,6 +111,7 @@ Spawn subagents for completion:
 - `iter-security-auditor` - Security scan
 - `iter-tester` - Write acceptance tests
 - `iter-documenter` - Create documentation
+- `iter-code-simplifier` - Refactor code for clarity and compactness
 
 ## Subagents Available
 
@@ -119,6 +126,7 @@ Spawn subagents for completion:
 | `iter-debugger` | Fix bugs | When needed |
 | `iter-security-auditor` | Security scan | Finalize |
 | `iter-documenter` | Create docs | Finalize |
+| `iter-code-simplifier` | Refactor code, remove duplication | Finalize |
 | `iter-explorer` | Fast codebase search | When needed |
 
 ## How to Spawn Subagents

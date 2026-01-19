@@ -1,6 +1,6 @@
 ---
 description: |
-  Iterative PRD-to-Plan with quality gate loop. Claude orchestrates, subagents do work.
+  Iterative PRD-to-SHIPPED with quality gate loop. Claude orchestrates, subagents do work.
   All subagents append progress to .iter/progress.txt.
   Iterate until ALL quality gates pass (SHIP).
 ---
@@ -12,7 +12,14 @@ description: |
 ## Usage
 
 ```bash
-/iternaut:plan:iter
+/iternaut:plan:iter [prd-version]
+```
+
+Examples:
+```bash
+/iternaut:plan:iter                    # Use LATEST PRD
+/iternaut:plan:iter v1.0.0             # Use specific version
+/iternaut:plan:iter prd-001-task.md    # Use specific file
 ```
 
 With custom models:
@@ -22,43 +29,55 @@ export ITRNAUT_REVIEWER_MODEL=opus
 /iternaut:plan:iter
 ```
 
+## PRD Location
+
+PRDs are stored in `.claude/prds/` with version prefix:
+```
+.claude/prds/
+  v1.0.0-prd-001-task-manager.md
+  v1.1.0-prd-002-payment-api.md
+  .prd-registry                    # Version registry
+```
+
 ## How It Works
 
 ```
 ┌─────────────────────────────────────────────────┐
 │              CLAUDE (ORCHESTRATOR)               │
 │  - Reads .iter/progress.txt                     │
+│  - Reads PRD from .claude/prds/                 │
 │  - Spawns subagents                             │
 │  - Makes SHIP/REVISE decisions                  │
 └────────────────────┬────────────────────────────┘
                      │
-         ┌───────────┴───────────┐
-         ↓                       ↓
-    Subagents              Reviewer
-    do work                validates
-         │                       │
-         └───────────┬───────────┘
-                     ↓
-            ┌────────┴────────┐
-            │                 │
-            ↓                 ↓
-          SHIP             REVISE
-            │                 │
-            ↓                 ↓
-         Exit            Fix gaps
-                            ↓
-                       Review again
+          ┌───────────┴───────────┐
+          ↓                       ↓
+     Subagents              Reviewer
+     do work                validates
+          │                       │
+          └───────────┬───────────┘
+                      ↓
+             ┌────────┴────────┐
+             │                 │
+             ↓                 ↓
+           SHIP             REVISE
+             │                 │
+             ↓                 ↓
+          Exit            Fix gaps
+                             ↓
+                        Review again
 ```
 
 ## Claude's Responsibilities
 
 1. **Initialize**: Create `.iter/progress.txt`
-2. **Spawn**: Launch subagents for each phase
-3. **Track**: Read `.iter/progress.txt` to see completion
-4. **Coordinate**: Ensure proper handoff between phases
-5. **Review**: Spawn iter-reviewer for quality gates
-6. **Iterate**: If REVISE, spawn subagents to fix gaps
-7. **Complete**: When SHIP, spawn finalize subagents
+2. **Load PRD**: Read from `.claude/prds/` based on version
+3. **Spawn**: Launch subagents for each phase
+4. **Track**: Read `.iter/progress.txt` to see completion
+5. **Coordinate**: Ensure proper handoff between phases
+6. **Review**: Spawn iter-reviewer for quality gates
+7. **Iterate**: If REVISE, spawn subagents to fix gaps
+8. **Complete**: When SHIP, spawn finalize subagents (including iter-code-simplifier)
 
 ## Phases
 
@@ -70,7 +89,7 @@ export ITRNAUT_REVIEWER_MODEL=opus
 | Planning | iter-planner | progress.txt, PLAN.md#Tasks |
 | Review | iter-reviewer | progress.txt, review-result.md |
 | (Iterate) | (varies) | progress.txt |
-| Finalize | iter-*, iter-tester, iter-documenter | progress.txt, artifacts/ |
+| Finalize | iter-*, iter-tester, iter-documenter, iter-code-simplifier | progress.txt, artifacts/ |
 
 ## Tracking Progress
 
@@ -104,10 +123,12 @@ cat .iter/progress.txt
 ## Example Session
 
 ```bash
-/iternaut:plan:iter
+/iternaut:plan:iter v1.0.0
 
 # Claude: Initialize
 echo "[TIMESTAMP] [AGENT:claude] [PHASE:boot] [STATUS:START]" > .iter/progress.txt
+
+# Claude: Load PRD from .claude/prds/v1.0.0-prd-001-task-manager.md
 
 # Claude: Spawn researchers (parallel)
 Use iter-researcher to research technical architecture
@@ -141,6 +162,7 @@ cat .iter/progress.txt | grep "SHIP\|REVISE"
 
 # If SHIP:
 #   Claude: Spawn finalize subagents
+#   Claude: Spawn iter-code-simplifier to clean up code
 #   Claude: Write COMPLETE
 ```
 
@@ -155,7 +177,7 @@ cat .iter/progress.txt | grep "SHIP\|REVISE"
 
 ## Input Files
 
-- `.claude/PRD.md` (required)
+- `.claude/prds/v*.md` (versioned PRD, required)
 - `.claude/CONTEXT.md` (optional)
 - `.claude/NON_GOALS.md` (optional)
 
@@ -173,3 +195,4 @@ cat .iter/progress.txt | grep "SHIP\|REVISE"
 - **Wait for completion** before next phase
 - **For REVISE**, identify specific gaps and spawn targeted subagents
 - **Iterate until SHIP** - don't accept partial completion
+- **Use iter-code-simplifier** in finalize to keep codebase clean

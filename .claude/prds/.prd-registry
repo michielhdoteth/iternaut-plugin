@@ -1,0 +1,17 @@
+# PRD Version Registry
+
+# This file tracks all PRD versions in .claude/prds/
+
+# Format:
+# VERSION=filename.md
+# STATUS=active|deprecated|archived
+
+# Latest active PRD (default when running /iternaut:plan)
+LATEST=v1.0.0-prd-001-task-manager.md
+
+# Version registry
+v1.0.0-prd-001-task-manager.md|active|Initial implementation
+v1.1.0-prd-002-payment-api.md|archived|Superseded by v2.0.0
+
+# Version order (for sequential development)
+ORDER=v1.0.0,v1.1.0,v2.0.0

@@ -1,6 +1,16 @@
 #!/bin/bash
-# iternaut-loop.sh - Ralph Loop for Claude Code
+# iternaut-loop.sh - Iterative Loop for Claude Code
 # Iterates until quality gates pass
+
+# DEPENDENCIES:
+# - bash: Shell interpreter (POSIX compatible)
+# - jq: JSON parsing (for reading JSON files)
+# - claude-code: Claude Code CLI tool
+#
+# Install dependencies:
+#   Ubuntu/Debian: apt-get install bash jq
+#   macOS: brew install jq
+#   Windows: Use Git Bash or WSL
 
 set -euo pipefail
 

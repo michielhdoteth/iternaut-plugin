@@ -1,5 +1,11 @@
 #!/bin/bash
-# iternaut-review.sh - Cross-model reviewer for Ralph Loop
+# iternaut-review.sh - Cross-model reviewer for iterative loop
+# Validates PLAN.md against quality gates
+
+# DEPENDENCIES:
+# - bash: Shell interpreter
+# - claude-code: Claude Code CLI tool
+# No external jq needed for this script
 
 set -euo pipefail
 

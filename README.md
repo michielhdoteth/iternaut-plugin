@@ -253,7 +253,7 @@ See `examples/` directory:
 ## Troubleshooting
 
 ### PRD not found
-Ensure `PRD.md` is in `.claude/` directory.
+Ensure `PRD.md` is in `.claude/prds/` directory with version prefix (e.g., `v1.0.0-prd-001-name.md`).
 
 ### Progress.txt not updating
 Check that `.iter/` directory is writable.
@@ -266,6 +266,23 @@ Increase `ITRNAUT_MAX_ITERATIONS` or simplify PRD scope.
 
 ### Subagent not working
 Check subagent files exist in `agents/` directory.
+
+## Contributing
+
+### Issues
+
+Report bugs and request features via GitHub Issues:
+- [Report a Bug](https://github.com/michielhdoteth/iternaut-plugin/issues/new?template=bug_report.md)
+- [Request Feature](https://github.com/michielhdoteth/iternaut-plugin/issues/new?template=feature_request.md)
+- [Ask Questions](https://github.com/michielhdoteth/iternaut-plugin/issues)
+
+### Pull Requests
+
+1. Fork the repository
+2. Create a feature branch
+3. Make changes
+4. Run verification: `bash scripts/verify.sh`
+5. Submit pull request
 
 ## Resources
 

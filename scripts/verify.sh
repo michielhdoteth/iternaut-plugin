@@ -1,5 +1,11 @@
 #!/bin/bash
 # verify.sh - Verify Iternaut plugin installation
+# Checks all required files are present
+
+# DEPENDENCIES:
+# - bash: Shell interpreter
+# - No external dependencies required
+# Runs with built-in commands only
 
 set -e
 
@@ -58,7 +64,7 @@ check_file "agents/iter-reviewer.md"
 check_file "agents/iter-security-auditor.md"
 check_file "agents/iter-deployer.md"
 check_file "agents/iter-monitor.md"
-check_file "agents/iter-synthesizer.md"
+check_file "agents/iter-code-simplifier.md"
 echo ""
 echo "=== Claude Orchestration ==="
 echo "Claude is the main orchestrator (no subagent needed)"
@@ -103,6 +109,12 @@ echo ""
 echo "=== Scripts ==="
 check_file "scripts/iternaut-loop.sh"
 check_file "scripts/iternaut-review.sh"
+
+echo ""
+echo "=== Documentation ==="
+check_file "docs/hooks.md"
+check_file "DEPENDENCIES.md"
+check_file "CHANGELOG.md"
 
 echo ""
 echo "=== Config ==="

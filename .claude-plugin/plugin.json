@@ -1,0 +1,12 @@
+{
+  "name": "iternaut",
+  "description": "Iternaut PRD-to-Plan conversion with iterative subagents. Claude orchestrates, subagents do the work.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Iternaut",
+    "email": "iternaut@example.com"
+  },
+  "homepage": "https://github.com/iternaut/iter-agent",
+  "repository": "https://github.com/iternaut/iter-agent",
+  "license": "MIT"
+}

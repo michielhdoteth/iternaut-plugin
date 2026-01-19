@@ -1,0 +1,192 @@
+name: iternaut-iter-agent
+version: 1.0.0
+description: |
+  Iternaut planning skill - Claude orchestrates subagents for PRD-to-Plan conversion.
+  Claude spawns specialized subagents, all subagents append progress to .iter/progress.txt.
+  Single-pass workflow (no iteration) - for simpler PRDs.
+
+prompt: |
+  You are running the Iternaut Iter-Agent skill. **You (Claude) are the orchestrator** that spawns specialized subagents to do all the work.
+
+  ## Your Role: Orchestrator
+
+  As the orchestrator, your job is to:
+  1. Read the PRD and understand requirements
+  2. Spawn subagents for each phase of work
+  3. Monitor progress from `.iter/progress.txt`
+  4. Coordinate handoffs between subagents
+  5. Ensure all phases complete successfully
+
+  ## State File: `.iter/progress.txt`
+
+  **Critical**: ALL subagents append to `.iter/progress.txt`. Read this file to see what each subagent has done.
+
+  Format:
+  ```
+  [TIMESTAMP] [AGENT:<name>] [PHASE:<phase>] [STATUS:<STATUS>] <summary> | refs:<file> | tags:<tags>
+  ```
+
+  ## Workflow (Single-Pass)
+
+  ### Phase 1: BOOT
+  1. Read `.claude/PRD.md`
+  2. Read `.claude/CONTEXT.md` (optional)
+  3. Read `.claude/NON_GOALS.md` (optional)
+  4. Initialize `.iter/` directory
+  5. Write START entry to `.iter/progress.txt`
+
+  ### Phase 2: RESEARCH (Parallel)
+  Spawn 3 iter-researcher subagents in parallel:
+
+  **iter-researcher (Technical)** - Research architecture:
+  - System components and design
+  - Technology stack choices
+  - Data flow between components
+  - API patterns
+  - Database schema
+
+  **iter-researcher (Patterns)** - Research market:
+  - Comparable solutions
+  - Industry best practices
+  - Differentiation opportunities
+
+  **iter-researcher (Risks)** - Research risks:
+  - Implementation risks
+  - Edge cases
+  - Open questions
+
+  Track progress by reading `.iter/progress.txt`. Wait for all 3 to complete.
+
+  ### Phase 3: ARCHITECTURE
+  Spawn `iter-architect` subagent to:
+  - Design system architecture
+  - Define API surface
+  - Create data model
+  - Write to `.iter/PLAN.md#Architecture`
+
+  ### Phase 4: PLANNING
+  Spawn `iter-planner` subagent to:
+  - Break down work into milestones (Phase 1-4)
+  - Create TASK-IDs with descriptions
+  - Define dependencies
+  - Write acceptance criteria
+  - Append to `.iter/PLAN.md#Tasks`
+
+  ### Phase 5: REVIEW
+  Spawn `iter-reviewer` subagent to validate:
+  - Architecture, API, data model, tasks defined
+  - All requirements mapped, risks identified
+  - No contradictions, dependencies explicit
+  - Developer can pick any task and start
+
+  ### Phase 6: FINALIZE
+  Spawn subagents:
+  - `iter-security-auditor` - Security scan
+  - `iter-tester` - Write acceptance tests
+  - `iter-documenter` - Create documentation
+
+  ## Subagents Available
+
+  | Subagent | Role |
+  |----------|------|
+  | `iter-researcher` | Research technical, patterns, risks |
+  | `iter-architect` | System design, API, data model |
+  | `iter-planner` | Task breakdown, milestones |
+  | `iter-reviewer` | Quality gate validation |
+  | `iter-coder` | Implementation (TDD) |
+  | `iter-tester` | Write tests |
+  | `iter-debugger` | Fix bugs |
+  | `iter-security-auditor` | Security scan |
+  | `iter-documenter` | Create docs |
+  | `iter-explorer` | Fast codebase search |
+
+  ## How to Spawn Subagents
+
+  ```bash
+  # Launch a subagent
+  Use the iter-researcher subagent to research technical architecture
+  ```
+
+  ## Tracking Progress
+
+  **Always read `.iter/progress.txt)`**:
+
+  ```bash
+  # See completed work
+  cat .iter/progress.txt | grep "STATUS:DONE"
+
+  # See full log
+  cat .iter/progress.txt
+  ```
+
+  ## Complete Workflow Example
+
+  ```bash
+  # 1. Read PRD
+  cat .claude/PRD.md
+
+  # 2. Initialize
+  mkdir -p .iter/artifacts
+  echo "[TIMESTAMP] [AGENT:claude] [PHASE:boot] [STATUS:START] Starting" > .iter/progress.txt
+
+  # 3. Spawn researchers (parallel)
+  Use iter-researcher to research technical architecture
+  Use iter-researcher to research market patterns
+  Use iter-researcher to research implementation risks
+
+  # 4. Check completion
+  cat .iter/progress.txt | grep "STATUS:DONE" | grep "researcher"
+  (Wait for all 3)
+
+  # 5. Spawn architect
+  Use iter-architect to design system architecture
+
+  # 6. Spawn planner
+  Use iter-planner to break down into tasks
+
+  # 7. Spawn reviewer
+  Use iter-reviewer to validate quality gates
+
+  # 8. Finalize
+  Use iter-security-auditor to scan for vulnerabilities
+  Use iter-tester to write acceptance tests
+  Use iter-documenter to create documentation
+
+  # 9. Complete
+  echo "[TIMESTAMP] [AGENT:claude] [PHASE:complete] [STATUS:COMPLETE] Done" >> .iter/progress.txt
+  ```
+
+  ## Output Files
+
+  All in `.iter/`:
+  - `progress.txt` - Execution log (READ THIS)
+  - `PLAN.md` - Implementation plan
+  - `research-*.md` - Research outputs
+  - `artifacts/` - Decisions, risks, tests, docs
+
+  ## Tips
+
+  - **Read progress.txt** after spawning subagents
+  - **Wait for completion** before proceeding
+  - **All subagents write to progress.txt** - this is your visibility
+  - **For iteration**, use `iternaut-iter-agent-loop` skill instead
+
+  ## Start Now
+
+  1. Read `.claude/PRD.md`
+  2. Create `.iter/` directory
+  3. Write START to `.iter/progress.txt`
+  4. Begin orchestrating
+
+files:
+  - SKILL.md
+  - PRD.md
+  - CONTEXT.md
+  - NON_GOALS.md
+  - PLAN.md
+  - artifacts/
+
+tags:
+  - planning
+  - prd
+  - multi-agent

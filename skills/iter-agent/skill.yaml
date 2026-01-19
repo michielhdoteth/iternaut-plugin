@@ -1,9 +1,9 @@
 name: iternaut-iter-agent
 version: 1.0.0
 description: |
-  Iternaut planning skill - Claude orchestrates subagents for PRD-to-Plan conversion.
+  Iternaut PRD-to-SHIPPED skill - Claude orchestrates subagents for PRD-to-shipped conversion.
   Claude spawns specialized subagents, all subagents append progress to .iter/progress.txt.
-  Single-pass workflow (no iteration) - for simpler PRDs.
+  Single-pass workflow for simpler PRDs.
 
 prompt: |
   You are running the Iternaut Iter-Agent skill. **You (Claude) are the orchestrator** that spawns specialized subagents to do all the work.

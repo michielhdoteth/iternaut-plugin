@@ -1,15 +1,15 @@
 # Iternaut Claude Plugin
 
-PRD-to-finished development via context engineering with iterative subagents. Claude orchestrates, subagents do the work.
+PRD-to-SHIPPED development via context engineering with iterative subagents. Claude orchestrates, subagents do the work.
 
 ## Overview
 
-Iternaut is a comprehensive framework for context-engineered AI-assisted development that takes a PRD through to fully finished implementation:
+Iternaut is a comprehensive framework for context-engineered AI-assisted development that takes a PRD through to fully SHIPPED implementation:
 - **Claude orchestration** - Main agent coordinates all work
 - **Specialized subagents** - 12 agents for different phases
-- **Iterative quality gates** - Work until all criteria pass
+- **Iterative quality gates** - Work until all criteria pass (SHIP)
 - **File-based state** - All progress persists in `.iter/`
-- **Complete delivery** - Not just planning, but full implementation
+- **Complete delivery** - Not just planning, but fully shipped code
 
 ## Commands
 

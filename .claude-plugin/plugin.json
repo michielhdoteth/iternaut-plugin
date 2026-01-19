@@ -1,6 +1,6 @@
 {
   "name": "iternaut",
-  "description": "Iternaut PRD-to-Plan conversion with iterative subagents. Claude orchestrates, subagents do the work.",
+  "description": "PRD-to-SHIPPED context engineering with iterative subagents. Claude orchestrates, subagents do all work until quality gates pass.",
   "version": "1.0.0",
   "author": {
     "name": "Iternaut",

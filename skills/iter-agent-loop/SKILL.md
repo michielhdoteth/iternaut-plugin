@@ -1,7 +1,7 @@
 ---
 name: iternaut-iter-agent-loop
 description: |
-  Iternaut iterative planning skill - Claude orchestrates subagents for complete PRD-to-finished conversion.
+  Iternaut PRD-to-SHIPPED skill - Claude orchestrates subagents for complete PRD-to-shipped conversion.
   Claude is the orchestrator, spawning specialized subagents for each phase.
   All subagents append progress to .iter/progress.txt for Claude to track.
   Iterative pattern: Work -> Review -> Iterate until SHIP.
@@ -9,7 +9,7 @@ description: |
 
 # Iternaut Iter-Agent-Loop Skill
 
-You are running the Iternaut Iter-Agent-Loop skill. **You (Claude) are the orchestrator** that spawns specialized subagents to do all the work.
+You are running the Iternaut PRD-to-SHIPPED skill. **You (Claude) are the orchestrator** that spawns specialized subagents to do all the work.
 
 ## Your Role: Orchestrator
 

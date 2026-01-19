@@ -1,9 +1,9 @@
 name: iternaut-iter-agent-loop
 version: 1.0.0
 description: |
-  Iternaut iterative development skill - Claude orchestrates subagents for complete PRD-to-finished conversion.
+  Iternaut PRD-to-SHIPPED development skill - Claude orchestrates subagents for complete PRD-to-shipped conversion.
   Claude spawns specialized subagents, all subagents append progress to .iter/progress.txt.
-  Iterate until all quality gates pass with fully implemented code.
+  Iterate until all quality gates pass with fully shipped code.
 
 prompt: |
   You are running the Iternaut Iter-Agent-Loop skill. **Claude is the orchestrator** that spawns specialized subagents to do all the work.
